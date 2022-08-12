@@ -21,7 +21,7 @@ def remove_follower(follower):
     return blocked != False 
 
 #very basic function to detect bots, you can rewrite this and use a more efficient method
-def isBot(follower):
+def is_bot(follower):
     url_format = "friends.roblox.com/v1/users/{}/{}/count"
     followings_num = RobloxRequest.request("GET", url_format.format(follower.id, "followings"), to_json=True).count
     friends_num = RobloxRequest.request("GET", url_format.format(follower.id, "friends"), to_json=True).count 
@@ -40,7 +40,7 @@ def main():
         result = RobloxRequest.request("GET", url_format.format(user_info.id, cursor), to_json=True)
         cursor = result.nextPageCursor 
         for follower in result.data:
-            if only_bots and isBot(follower) or not only_bots:
+            if only_bots and is_bot(follower) or not only_bots:
                 success = remove_follower(follower)
                 if success:
                     print("Removed follower:", follower.name)
