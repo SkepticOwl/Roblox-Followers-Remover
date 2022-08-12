@@ -11,7 +11,7 @@ def update_csrf():
     user.csrf = requests.post("https://auth.roblox.com/v2/logout", headers={"cookie":user.cookie}).headers["x-csrf-token"]
 
 def set_cookie(cookie):
-    user.cookie = ".ROBLOSECURITY="+re.sub("(.*)_", "", cookie)
+    user.cookie = ".ROBLOSECURITY="+re.sub("(.*)_", "", cookie.upper())
 
 def to_object(str):
     return json.loads(str, object_hook=lambda d: SimpleNamespace(**d))
@@ -28,15 +28,14 @@ def request(method, url, has_cookie=False, has_csrf=False, data={}, to_json=Fals
     elif response.status_code == 401 and (response.reason == 0 or response.reason.find("Unauthorized") != -1):
         if has_cookie:
             print("Unauthorized request, please enter a valid cookie")
-            set_cookie(input("Cookie: ").upper())
+            set_cookie(input("Cookie: "))
         else: has_cookie = True 
         return request(method, url, has_cookie, has_csrf, data, to_json)
     elif response.status_code == 403 and (response.reason == 0 or response.reason.find("Token Validation Failed") != -1):
         if has_csrf:
             print("Request validation failed, updating csrf")
             update_csrf()
-        else:
-            has_csrf = True 
+        else: has_csrf = True 
         return request(method, url, has_cookie, has_csrf, data, to_json)
     elif response.status_code == 429 or response.status_code == 500:
         print("Getting rate limited, waiting for 60 seconds")
