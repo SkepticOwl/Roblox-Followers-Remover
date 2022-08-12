@@ -34,12 +34,9 @@ def check_pin_status():
     while True:
         response = ask("Continue? yes/no ")
         if response:
-            if pin_locked():
-                print("You must disable your account pin before continuing")
-            else: 
-                break 
-        else:
-            exit()
+            if pin_locked(): print("You must disable your account pin before continuing")
+            else: break 
+        else: exit()
 
 def main():
     RobloxRequest.set_cookie(input("Cookie: "))
