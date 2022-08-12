@@ -27,12 +27,26 @@ def is_bot(follower):
     friends_num = RobloxRequest.request("GET", url_format.format(follower.id, "friends"), to_json=True).count 
     return followings_num == 0 and friends_num == 0
 
+def pin_locked():
+    return RobloxRequest.request("GET", "auth.roblox.com/v1/account/pin", True, to_json=True).isEnabled 
+
+def check_pin_status():
+    while True:
+        response = ask("Continue? yes/no ")
+        if response:
+            if pin_locked():
+                print("You must disable your account pin before continuing")
+            else: 
+                break 
+        else:
+            exit()
+
 def main():
     RobloxRequest.set_cookie(input("Cookie: "))
     user_info = RobloxRequest.request("GET", "users.roblox.com/v1/users/authenticated", True, to_json=True) 
     print("Authenticated as", user_info.name)
-    if not ask("Continue? yes/no "): exit() 
-    only_bots = ask("Only unfollow bots? yes/no ")
+    check_pin_status()
+    only_bots = ask("Only remove bots? yes/no ")
     url_format = "friends.roblox.com/v1/users/{}/followers?cursor={}"
     cursor = ""
     RobloxRequest.update_csrf()
