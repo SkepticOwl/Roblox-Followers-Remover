@@ -28,7 +28,7 @@ def isBot(follower):
     return followings_num == 0 and friends_num == 0
 
 def main():
-    RobloxRequest.set_cookie(input("Cookie: ").upper())
+    RobloxRequest.set_cookie(input("Cookie: "))
     user_info = RobloxRequest.request("GET", "users.roblox.com/v1/users/authenticated", True, to_json=True) 
     print("Authenticated as", user_info.name)
     if not ask("Continue? yes/no "): exit() 
