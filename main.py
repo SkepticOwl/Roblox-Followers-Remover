@@ -49,7 +49,7 @@ def remove_followers(followers, failed):
 def remove_failed_attempts(failed):
     new = [] 
     if len(failed) > 0:
-        response = ask(f"{len(failed)} followers failed to delete, retry?")
+        response = ask(f"{len(failed)} followers failed to delete, retry? yes/no")
         if response:
             remove_followers(failed, new) 
             remove_failed_attempts(new) 
