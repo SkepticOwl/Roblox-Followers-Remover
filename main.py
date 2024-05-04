@@ -64,7 +64,7 @@ def main():
     cursor = ""
     failed = [] 
     while cursor != None:
-        result = RobloxRequest.request("GET", f"friends.roblox.com/v1/users/{user_info.id}/followers?cursor={cursor}", to_json=True)
+        result = RobloxRequest.request("GET", f"friends.roblox.com/v1/users/{user_info.id}/followers?limit=100&cursor={cursor}", to_json=True)
         filtered = [follower for follower in result.data if only_bots and is_bot(follower) or not only_bots] 
         remove_followers(filtered, failed) 
         cursor = result.nextPageCursor 
